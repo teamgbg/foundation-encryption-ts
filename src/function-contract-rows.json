@@ -5,35 +5,39 @@
   "rows": [
     {
       "args": [
-        {
-          "other_table": [
-            "x"
-          ]
-        },
-        "user",
-        "create",
-        {
-          "data": {
-            "phone": "plain"
-          }
-        },
-        {
-          "$fn": {
-            "returns": {
-              "phone": "cipher"
-            }
-          }
-        }
+        "count"
       ],
-      "note": "Coverage row (work item #847757): a model with no declared encrypted fields is a pure passthrough — the write reaches next untouched and the result returns untouched (the $fn stub is next).",
-      "expect": {
-        "phone": "cipher"
-      },
-      "export": "createEncryptionInterceptor",
+      "note": "Coverage row (work item #847757): count-only results carry no field data to decrypt.",
+      "expect": true,
+      "export": "isCountOnlyOperation",
+      "module": "src/extension.ts",
+      "package": "@teamscala/encryption",
+      "suite_type": "function_call",
+      "slug": "enc:count-is-count-only"
+    },
+    {
+      "args": [
+        "create"
+      ],
+      "note": "Coverage row (work item #847757): the write-operation gate the facade interceptor encrypts on.",
+      "expect": true,
+      "export": "isWriteOperation",
       "module": "src/extension.ts",
       "package": "@teamscala/encryption",
       "suite_type": "function_call",
       "slug": "enc:interceptor-passthrough-unlisted-model"
+    },
+    {
+      "args": [
+        "findMany"
+      ],
+      "note": "Coverage row (work item #847757): reads are not encrypted — the read half of the operation gate.",
+      "expect": false,
+      "export": "isWriteOperation",
+      "module": "src/extension.ts",
+      "package": "@teamscala/encryption",
+      "suite_type": "function_call",
+      "slug": "enc:reads-are-not-write-operations"
     },
     {
       "args": [
