@@ -26,6 +26,14 @@ async function getEncryptedFieldsLazy(): Promise<Record<string, string[]>> {
 const WRITE_OPS = new Set(["create", "update", "upsert", "createMany", "updateMany"]);
 const COUNT_ONLY_OPS = new Set(["createMany", "updateMany", "deleteMany", "count"]);
 
+export function isWriteOperation(operation: string): boolean {
+	return WRITE_OPS.has(operation);
+}
+
+export function isCountOnlyOperation(operation: string): boolean {
+	return COUNT_ONLY_OPS.has(operation);
+}
+
 interface MutationArgs {
 	create?: Record<string, unknown> | null;
 	update?: Record<string, unknown> | null;
