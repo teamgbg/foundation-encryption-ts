@@ -2,6 +2,7 @@
  * @system core-encryption
  * @status handwritten
  * @edit synchronous AES-256-GCM decryption.
+ */
 import { createDecipheriv } from "node:crypto";
 import {
 	ALGORITHM,
