@@ -5,6 +5,38 @@
   "rows": [
     {
       "args": [
+        {
+          "other_table": [
+            "x"
+          ]
+        },
+        "user",
+        "create",
+        {
+          "data": {
+            "phone": "plain"
+          }
+        },
+        {
+          "$fn": {
+            "returns": {
+              "phone": "cipher"
+            }
+          }
+        }
+      ],
+      "note": "Coverage row (work item #847757): a model with no declared encrypted fields is a pure passthrough — the write reaches next untouched and the result returns untouched (the $fn stub is next).",
+      "expect": {
+        "phone": "cipher"
+      },
+      "export": "createEncryptionInterceptor",
+      "module": "src/extension.ts",
+      "package": "@teamscala/encryption",
+      "suite_type": "function_call",
+      "slug": "enc:interceptor-passthrough-unlisted-model"
+    },
+    {
+      "args": [
         null
       ],
       "note": "Total, and it never throws: an absent value (null, undefined, or empty) classifies as NOT sealed, so it is plaintext by definition rather than an error. The wall's own comment makes the same call from the other side - an invalid-base64 token is plaintext, so the trigger fires a clean refusal instead of an accidental 22P02.",
