@@ -3,8 +3,9 @@
  * @status handwritten — none derivable: encryptSecretConfig is the WRITER half
  *   (the seal verb's vocabulary), decryptSecretConfig a named delegate to
  *   unsealSecretConfig; no generator emits either.
- * @edit edit directly
- * Writer and reader of the sealed `token` field in registry secret configs.
+ * @edit the writer of the sealed `token` field in registry secret configs, and
+ *   the reader — a named delegate to `unsealSecretConfig` so every call site
+ *   gets shape-first, every-field, fail-closed behaviour from one line.
  */
 
 import { encrypt } from "./encrypt";
@@ -27,14 +28,9 @@ export function encryptSecretConfig(
 	return config;
 }
 
-/**
- * The READER half, no longer token-only: it USED to open `token` alone and by
- * DECRYPT-PROBE, which under a key the process does not hold answers false and
- * has the caller spend the envelope — the 2026-09-30 blank-asset path. Four
- * non-token rows hold sealed values it never reached. Now a named delegate to
- * `unsealSecretConfig`, so all 61 workspace call sites get shape-first,
- * every-field, fail-closed behaviour from this one line.
- */
+/** The READER half. It used to open `token` alone and by DECRYPT-PROBE, which
+ *  under a key the process does not hold answers false and has the caller spend
+ *  the envelope — the 2026-09-30 blank-asset path. */
 export function decryptSecretConfig(
 	config: SecretConfigLike,
 ): SecretConfigLike {

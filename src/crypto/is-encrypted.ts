@@ -1,9 +1,8 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * Checks if a string is AES-256-GCM encrypted.
+ * @edit does this string decrypt? A wrong key answers false, so this is not a
+ *   shape test — `looksSealed` answers that.
  */
 import { decrypt } from "./decrypt";
 

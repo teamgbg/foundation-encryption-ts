@@ -1,10 +1,7 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * Decrypts if encrypted, returns plaintext as-is otherwise.
- */
+ * @edit decrypts if encrypted, returns plaintext as-is otherwise.
 import { decrypt } from "./decrypt";
 import { isEncrypted } from "./is-encrypted";
 

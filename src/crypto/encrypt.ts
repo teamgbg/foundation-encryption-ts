@@ -1,10 +1,7 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * Synchronous AES-256-GCM encryption.
- */
+ * @edit synchronous AES-256-GCM encryption.
 import { createCipheriv, randomBytes } from "node:crypto";
 import {
 	ALGORITHM,

@@ -1,11 +1,9 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * Encrypted field definitions registry accessor. Reads the encrypted-fields config from
- * core-registry at runtime. Provides field maps for both the main scala-hub app and
- * microservices that import this package without loading the full registry at boot.
+ * @edit the encrypted-fields declaration accessor, read at runtime from the
+ *   registry so a consumer can import this package without loading the full
+ *   registry at boot.
  */
 
 export function getEncryptedFields(): Record<string, string[]> {
@@ -20,8 +18,8 @@ export async function getEncryptedFieldsFromRegistry(): Promise<
 > {
 	// The import stays dynamic so a microservice that never calls this function
 	// does not pull @teamscala/db/registry into its module graph at boot. The
-	// return type names the ONE symbol we actually require from it, so a
-	// contract change there is a type error here rather than a runtime crash.
+	// return type names the ONE symbol required, so a contract change there is a
+	// type error here rather than a runtime crash.
 	interface RegistryConfigModule {
 		requireConfigObject(slug: string): { models: Record<string, string[]> };
 	}

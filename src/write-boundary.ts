@@ -1,35 +1,14 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * Encrypt-on-write boundary for credential-typed columns (operator ruling
- * 2026-08-19). Called by every generated ORPC mutation handler immediately
- * after validateEnumOrThrow — the db-validation boundary every write crosses.
- * Plaintext for a declared credential column is sealed in place BEFORE the
- * Prisma call; a value that cannot be verified encrypted REFUSES the write, so
- * cleartext-at-rest is unmakeable at the write boundary rather than patrolled.
- *
- * Column declarations resolve from the `config/encrypted-fields` registry row
- * — the single source, never spelled here. The resolved map is cached for the
- * process life (same semantics as the field-encryption Prisma extension); a
- * registry read failure falls back to the last known map and refuses only when
- * no map was ever resolved (fail-closed: a write that cannot verify encryption
- * must not proceed).
- */
-
-/**
- * Apply the credential write boundary to a mutation payload, in place.
- *
- * Refusal semantics (operator ruling 2026-08-19 half b, live-probe gated
- * 2026-08-20): a PLAINTEXT value is ALWAYS REFUSED — the generic CRUD surface
- * (MCP tools) must not accept credentials, because encrypt-on-write alone
- * seals garbage and silently displaces live keys (measured: a placeholder
- * displaced a working Fathom key). System/internal callers (OAuth refresh,
- * provisioning) seal via `sealCredential()` directly, NOT through the ORPC
- * mutation path; the ORPC write surface accepts only ciphertext, the
- * null-to-clear form, or an UNSET value (legitimate partial updates).
- * Ciphertext always passes.
+ * @edit the encrypt-on-write boundary for credential-typed columns, called by
+ *   every generated ORPC mutation handler after validateEnumOrThrow. A
+ *   plaintext value REFUSES the write rather than being sealed (operator ruling
+ *   2026-08-19 — sealing garbage silently displaced a live key); a value that
+ *   cannot be verified encrypted also refuses, so cleartext-at-rest is
+ *   unmakeable at the boundary. Columns resolve from the
+ *   `config/encrypted-fields` registry row, cached for the process life and
+ *   fail-closed. Full rationale: `reference/encryption.md`.
  */
 
 import { createCache } from "@teamscala/cache/create-cache";
@@ -39,10 +18,9 @@ import { getEncryptedFieldsFromRegistry } from "./fields.ts";
 
 type FieldsMap = Record<string, string[]>;
 
-// @orpc/server is a SERVER-ONLY dependency; this module's callers are generated
-// ORPC handlers, so it is present wherever the boundary runs. Resolved lazily
-// (same pattern as @teamscala/db-validation runtime-validation) so bundling
-// this package for non-server contexts never pulls it in.
+// @orpc/server is a SERVER-ONLY dependency whose callers are the generated ORPC
+// handlers, so it is present wherever the boundary runs. Resolved lazily so
+// bundling this package for non-server contexts never pulls it in.
 type ORPCErrorCtor = new (
 	code: string,
 	init?: { data?: unknown; message?: string },
@@ -77,10 +55,8 @@ function refuse(model: string, field: string, reason: string, remedy: string): n
 	throw error;
 }
 
-/**
- * Seal one credential value. Returns the ciphertext to store, or null when the
- * value must be left untouched (absent, null-clearing, empty, already sealed).
- */
+/** Seal one credential value. Returns the ciphertext to store, or null when the
+ *  value must be left untouched (absent, null-clearing, empty, already sealed). */
 function sealCredential(model: string, field: string, value: unknown): string | null {
 	if (value === null || value === undefined) return null;
 	if (typeof value !== "string") {

@@ -2,9 +2,7 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * AES-256-GCM constants and key resolution.
+ * @edit the AES-256-GCM constants and key resolution.
  */
 
 import { getEncryptionConfig } from "../configure.ts";
@@ -14,16 +12,10 @@ export const IV_LENGTH = 12;
 export const AUTH_TAG_LENGTH = 16;
 
 export function getEncryptionKey(): Buffer {
-	// Primary source: the bootloader-injected key (configured-primitives). The boot pipeline's runConfigurePrimitives() resolves env/ENCRYPTION_KEY and
-	// passes it to configure() on the MAIN thread.
-	//
-	// FALLBACK (constitutional carve-out, encryption-is-the-only-encryption): worker/subprocess contexts (e.g. @teamscala/worker-pool workers running
-	// sync handlers) boot FRESH and do NOT inherit the main thread's
-	// runConfigurePrimitives() configure() call — so the configured key is
-	// unset there. Per the constitution, encryption reads process.env.
-	// ENCRYPTION_KEY as a fallback so those contexts decrypt reliably. This is
-	// the SOLE env-read exception to the bootloader-owns-env rule, carved out
-	// because workers cannot run the boot pipeline's configure() phase.
+	// Primary source: the bootloader-injected key (configured-primitives). The
+	// worker/subprocess fallback is the sanctioned env read — workers boot fresh
+	// and never inherit the main thread's configure(), so without it they could
+	// not decrypt at all.
 	let keyHex = getEncryptionConfig().encryptionKeyHex;
 	if (!keyHex) {
 		keyHex = process.env.ENCRYPTION_KEY;

@@ -1,10 +1,8 @@
 /**
  * @system core-encryption
  * @status handwritten
- * @edit edit directly
- *
- * configured-primitives entry point for the encryption package.
- * The bootloader injects the encryption key at startup.
+ * @edit the configured-primitives entry point — the bootloader injects the
+ *   encryption key here at startup.
  */
 
 export interface EncryptionConfig {
