@@ -8,7 +8,7 @@
 	"capability": "Encryption helpers: symmetric crypto, field-level encryption, Prisma extension. The single sanctioned encryption surface.",
 	"tier": "foundation",
 	"type": "module",
-	"version": "0.3.101",
+	"version": "0.3.102",
 	"description": "Encryption helpers: symmetric crypto, field-level encryption, Prisma extension. The single sanctioned encryption surface.",
 	"imports": {
 		"#encryption/*": "./src/*",
@@ -18,12 +18,12 @@
 		"src"
 	],
 	"dependencies": {
-		"@teamscala/cache": "1.0.79"
+		"@teamscala/cache": "*"
 	},
 	"devDependencies": {
-		"bun-types": "1.4.2",
-		"@happy-dom/global-registrator": "20.14.5",
-		"@testing-library/react": "16.3.3"
+		"bun-types": "*",
+		"@happy-dom/global-registrator": "*",
+		"@testing-library/react": "*"
 	},
 	"exports": {
 		"./configure": "./src/configure.ts",
@@ -46,6 +46,8 @@
 		"./crypto/unseal-secret-value.ts": "./src/crypto/unseal-secret-value.ts",
 		"./extension": "./src/extension.ts",
 		"./extension.ts": "./src/extension.ts",
+		"./facade-interceptor": "./src/facade-interceptor.ts",
+		"./facade-interceptor.ts": "./src/facade-interceptor.ts",
 		"./fields": "./src/fields.ts",
 		"./fields.ts": "./src/fields.ts",
 		"./write-boundary": "./src/write-boundary.ts",
