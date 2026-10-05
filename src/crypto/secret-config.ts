@@ -1,8 +1,6 @@
 /**
  * @system core-encryption
- * @status handwritten — none derivable: encryptSecretConfig is the WRITER half
- *   (the seal verb's vocabulary), decryptSecretConfig a named delegate to
- *   unsealSecretConfig; no generator emits either.
+ * @status handwritten
  * @edit the writer of the sealed `token` field in registry secret configs, and
  *   the reader — a named delegate to `unsealSecretConfig` so every call site
  *   gets shape-first, every-field, fail-closed behaviour from one line.

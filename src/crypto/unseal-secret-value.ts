@@ -1,8 +1,6 @@
 /**
  * @system core-encryption
- * @status handwritten — none derivable: catalogue + package-catalog searched;
- *   the Rust twin is unreachable from TS, the TS twin opened `token` alone by
- *   decrypt-probe — both defects fixed here.
+ * @status handwritten
  * @edit the READER half, three arms: a sealed value opens, an unsealed one
  *   returns unchanged, and one that will NOT open is REFUSED BY NAME and
  *   reported absent — never as the stored bytes. Vectors:

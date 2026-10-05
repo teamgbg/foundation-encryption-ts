@@ -1,9 +1,6 @@
 /**
  * @system core-encryption
- * @status handwritten — none derivable: generator catalogue and
- *   `reference/package-catalog.md` searched; the sealed-shape predicates that
- *   exist (Rust, SQL) are unreachable from TS, and the only TS copy was a
- *   consumer's private one — the duplication this removes.
+ * @status handwritten
  * @edit does this value CARRY the sealed shape? Not `isEncrypted` — it answers
  *   "does it decrypt", so a wrong key answers false. Vectors: the secrets doc.
  */
