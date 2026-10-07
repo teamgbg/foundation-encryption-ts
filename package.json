@@ -46,8 +46,6 @@
 		"./crypto/unseal-secret-value.ts": "./src/crypto/unseal-secret-value.ts",
 		"./extension": "./src/extension.ts",
 		"./extension.ts": "./src/extension.ts",
-		"./facade-interceptor": "./src/facade-interceptor.ts",
-		"./facade-interceptor.ts": "./src/facade-interceptor.ts",
 		"./fields": "./src/fields.ts",
 		"./fields.ts": "./src/fields.ts",
 		"./write-boundary": "./src/write-boundary.ts",
